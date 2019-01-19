@@ -93,7 +93,7 @@ insert into products values('51-APP','Apple','Danish',1.15);
 insert into products values('51-ATW','Almond','Twist',1.15);
 insert into products values('51-BC','Almond','Bear Claw',1.95);
 insert into products values('51-BLU','Blueberry','Danish',1.15);
-
+insert into products values('45-GEF','Cherry','Cookie',1.28);
 REM --------------------------------------------------------------------------
 REM RECEIPTS(receipt number, receipt Date, Customer)
 
