@@ -1,4 +1,8 @@
 SQL> @z:Ex_1.sql
+SQL> REM ***SSN COLLEGE OF ENGINEERING***
+SQL> REM ***DEPARTMENT OF COMPUTER SCIENCE ENGINEERING***
+SQL> REM ***DATABASE MANAGEMENT SYSTEMS LAB***
+SQL> REM ***Assignment 1: DDL for Mail Order Database***
 SQL> REM: Dropping the tables
 SQL> drop table Order_Details;
 
