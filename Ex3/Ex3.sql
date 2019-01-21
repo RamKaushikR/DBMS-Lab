@@ -875,13 +875,12 @@ select * from products where pid in
 (select item from item_list group by item having count(*) >= all(select count(*) from item_list group by item));
 REM 4. Show the number of receipts that contain the product whose price is more than the
 REM average price of its food type.
-select count(*) from products p1 where price > (select avg(price) from products p2 group by food having p1.food = p2.food);
+select count(*) from products p1 where 
+price > (select avg(price) from products p2 group by food having p1.food = p2.food);
 REM 5. Display the customer details along with receipt number and date for the receipts that
 REM are dated on the last day of the receipt month.
 select c.*, r.rno, r.rdate from customers c join Receipts r on(c.cid = r.cid)
-where (extract(day from rdate) = 31 and extract(month from rdate) in(1,3,5,7,8,10,12))
-or (extract(day from rdate) = 30 and extract(month from rdate) in(4,6,9,11))
-or ((extract(day from rdate) = 28 or extract(day from rdate) = 29) and extract(month from rdate) = 2);
+where r.rdate = EOMONTH(r.rdate);
 REM 6. Display the receipt number(s) and its total price for the receipt(s) that contain Twist
 REM as one among five items. Include only the receipts with total price more than $25.
 select i.rno, sum(p.price) from item_list i join products p on(i.item = p.pid)
