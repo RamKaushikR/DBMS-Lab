@@ -17,8 +17,7 @@ SQL> create table nobel(
  11  );
 
 Table created.
-
-SQL> 
+ 
 SQL> REM ***Populate nobel relation***
 SQL> insert into nobel values(100,'Robert B. Laughlin','m','Phy','Condensed matter',1998,'Stanford University','01-nov-1950','USA');
 
@@ -60,7 +59,6 @@ SQL> insert into nobel values(110,'Jose Saramago','m','Lit','Portuguese',1998,nu
 
 1 row created.
 
-SQL> 
 SQL> insert into nobel values(111,'Eric A Cornell','m','Phy','Atomic physics',2001,'University of Colorado','19-dec-1961','USA');
 
 1 row created.
@@ -89,7 +87,6 @@ SQL> insert into nobel values(117,'V S Naipaul','m','Lit','English',2001,null,'1
 
 1 row created.
 
-SQL> 
 SQL> insert into nobel values(118,'Charles A Kao','m','Phy','Fiber technology',2009,'University of Hongkong','04-nov-1933','China');
 
 1 row created.
@@ -134,7 +131,6 @@ SQL> insert into nobel values(128,'Herta Muller','f','Lit','German',2009,null,'1
 
 1 row created.
 
-SQL> 
 SQL> REM ***************************END OF INSERT****************************************
 SQL> 
 SQL> REM 1: Display the nobel laureate(s) who born after 1­Jul­1960.
@@ -146,7 +142,6 @@ Eric A Cornell                 Phy 19-DEC-61
 Carol W Greider                Med 15-APR-61                                    
 Barack H Obama                 Pea 04-AUG-61                                    
 
-SQL> 
 SQL> REM 2: Display the Indian laureate (name, category, field, country, year awarded) who was awarded in the Chemistry category.
 SQL> select Name,Category,Field,Country,Year_Award from Nobel where Country = 'India' and Category = 'Che';
 
@@ -157,8 +152,6 @@ YEAR_AWARD
 Venkatraman Ramakrishnan       Che Biochemistry              India              
       2009                                                                      
                                                                                 
-
-SQL> 
 SQL> REM 3: . Display the laureates (name, category,field and year of award)
 SQL> REM      who was awarded between 2000 and 2005 for the Physics or Chemistry category.
 SQL> select Name,Category,Field,Country,Year_Award from Nobel where Year_Award between 2000 and 2005 and Category in ('Phy', 'Che');
@@ -184,8 +177,6 @@ YEAR_AWARD
 K Barry Sharpless              Che Organic Chemistry         USA                
       2001                                                                      
                                                                                 
-
-SQL> 
 SQL> REM 4: Display the laureates name with their age at the time of award for the Peace category.
 SQL> select Name,Year_Award - extract(year from DOB) as Age from Nobel where Category = 'Pea';
 
@@ -196,7 +187,6 @@ David Trimble                          54
 Kofi Annan                             63                                       
 Barack H Obama                         48                                       
 
-SQL> 
 SQL> REM 5: Display the laureates (name,category,aff_role,country) whose name starts with A or ends with a, but not from Israel.
 SQL> select Name,Category,Aff_Role,Country from Nobel where (Name like 'A%' or Name like '%a') and Country not like 'Israel';
 
@@ -205,7 +195,6 @@ NAME                           CAT AFF_ROLE                       COUNTRY
 Amartya Sen                    Eco Trinity College                India         
 Barack H Obama                 Pea President of USA               USA           
 
-SQL> 
 SQL> REM 6: Display the name, gender, affiliation, dob and country of laureates who was born in 1950s Label the dob column as Born 1950.
 SQL> select Name,Gender,Aff_Role,DOB as Born1950,Country from Nobel where extract(year from DOB) between 1950 and 1960;
 
@@ -230,8 +219,6 @@ COUNTRY
 Herta Muller                   f                                17-AUG-53       
 Romania                                                                         
                                                                                 
-
-SQL> 
 SQL> REM 7: Display the laureates (name,gender,category,aff_role,country) whose name starts with A, D or H.
 SQL> REM    Remove the laureate if he/she do not have any affiliation. Sort the results in ascending order of name.
 SQL> select Name,Gender,Category,Aff_Role,Country from Nobel
@@ -245,7 +232,6 @@ Daniel C. Tsui                 m Phy Princeton University           China
 David Trimble                  m Pea Ulster Unionist party Leader   Ireland     
 Horst L Stormer                m Phy Columbia University            Germany     
 
-SQL> 
 SQL> REM 8: Display the university name(s) that has to its credit by having at least 2 nobel laureate with them.
 SQL> select Aff_Role,count(*) from Nobel where Aff_Role like '%University%' group by Aff_Role having count(*)>=2;
 
@@ -254,7 +240,6 @@ AFF_ROLE                         COUNT(*)
 University of California                5                                       
 University of Colorado                  2                                       
 
-SQL> 
 SQL> REM 9: List the date of birth of youngest and eldest laureates by country­wise. Label the column as Younger,
 SQL> REM    Elder respectively. Include only the country having more than one laureate.
 SQL> REM    Sort the output in alphabetical order of country.
@@ -268,7 +253,6 @@ Ireland    15-OCT-44 18-JAN-37          2
 UK         17-AUG-32 31-OCT-25          2                                       
 USA        19-DEC-61 10-MAY-30         11                                       
 
-SQL> 
 SQL> REM 10: Show the details (year award,category,field) where the award is shared among the laureates in
 SQL> REM     the same category and field. Exclude the laureates from USA.
 SQL> select Year_Award,Category,Field,count(*) from Nobel where Country not like 'USA'
@@ -281,19 +265,16 @@ YEAR_AWARD CAT FIELD                       COUNT(*)
       1998 Phy Condensed matter                   2                             
       2009 Che Biochemistry                       2                             
 
-SQL> 
 SQL> REM TCL Commands
 SQL> 
 SQL> savepoint A;
 
 Savepoint created.
 
-SQL> 
 SQL> insert into nobel values(129,'Ram','m','Phy','World Organizing','2018','Cambridge University','19-JUN-1958','India');
 
 1 row created.
 
-SQL> 
 SQL> select * from nobel where name = 'Ram';
 
 LAUREATE_ID NAME                           G CAT FIELD                          
@@ -303,33 +284,26 @@ YEAR_AWARD AFF_ROLE                       DOB       COUNTRY
         129 Ram                            m Phy World Organizing               
       2018 Cambridge University           19-JUN-58 India                       
                                                                                 
-
-SQL> 
 SQL> update nobel set aff_role='Linguists' where category = 'Lit';
 
 3 rows updated.
 
-SQL> 
 SQL> delete from nobel where field='Enzymes';
 
 2 rows deleted.
 
-SQL> 
 SQL> select * from nobel where field='Enzymes';
 
 no rows selected
 
-SQL> 
 SQL> rollback to A;
 
 Rollback complete.
 
-SQL> 
 SQL> select * from nobel where name = 'Ram';
 
 no rows selected
 
-SQL> 
 SQL> commit;
 
 Commit complete.
