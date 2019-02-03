@@ -88,6 +88,22 @@ REM 5. Create a view Cheap_View from Cheap_Food that shows only the product id, 
 create view Cheap_View as 
 select pid,flavor,food from Cheap_Food;
 select * from Cheap_View;
+REM Updatable
+select COLUMN_NAME,UPDATABLE from USER_UPDATABLE_COLUMNS 
+where table_name = 'CHEAP_VIEW';
+REM Check Update
+insert into Cheap_Food
+values('20-BC-C-15','Blueberry','Cake',0.79);
+select * from Cheap_View;
+REM Update
+update Cheap_View 
+set price = price*3 - 1;
+select * from Cheap_View;
+REM Delete 
+delete from Cheap_View
+where pid='20-BC-C-15';
+select * from Cheap_View;
+
 REM 6. Create a sequence named Ordinal_No_Seq which generates the ordinal number 
 REM starting from 1, increment by 1, to a maximum of 10. Include the options of cycle, 
 REM cache and order. Use this sequence to populate the item_list table for a new order.
@@ -101,9 +117,11 @@ insert into Receipts values(69875, '28-Oct-2007', 15);
 insert into item_list values(69875, Ordinal_No_Seq.nextval,  '70-TU');
 insert into item_list values(69875, Ordinal_No_Seq.nextval,  '70-TU');
 insert into item_list values(69875, Ordinal_No_Seq.nextval,  '70-TU');
+
 REM 7. Create a synonym named Product_details for the item_list relation. Perform the 
 REM DML operations on it.
 create synonym Product_details for item_list;
+
 REM 8. Drop all the above created database objects.
 drop view Blue_Flavor;
 drop view Cheap_Food;
