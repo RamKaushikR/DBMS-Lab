@@ -58,7 +58,6 @@ PID             FOOD                 PRICE
 90-BLU-11       Tart                  8.25                                      
 51-BLU          Danish                1.15                                      
 
-SQL> 
 SQL> REM 2. Create a view named Cheap_Food, which display the details (product id, flavor,
 SQL> REM food, price) of products with price lesser than $1. Ensure that, the price of these
 SQL> REM food(s) should never rise above $1 through view.
@@ -128,7 +127,6 @@ PID             FLAVOR          FOOD                 PRICE
 70-LEM          Lemon           Cookie               .5967                      
 70-W            Walnut          Cookie               .5967                      
 
-SQL> 
 SQL> REM 3. Create a view called Hot_Food that show the product id and its quantity where the
 SQL> REM same product is ordered more than once in the same receipt.
 SQL> create view Hot_Food as
@@ -260,7 +258,6 @@ delete from Hot_Food
 ERROR at line 1:
 ORA-01732: data manipulation operation not legal on this view 
 
-
 SQL> select * from Hot_Food;
 
 ITEM                 COUNT                                                      
@@ -291,7 +288,6 @@ ITEM                 COUNT
 
 20 rows selected.
 
-SQL> 
 SQL> REM 4. Create a view named Pie_Food that will display the details (customer lname, flavor,
 SQL> REM     receipt number and date, ordinal) who had ordered the Pie food with receipt details.
 SQL> create view Pie_Food as
@@ -366,8 +362,7 @@ ESPOSITA             Apple                48647 09-OCT-07          2
 ARNN                 Apple                11548 21-OCT-07          2            
 
 13 rows selected.
-
-SQL> 
+ 
 SQL> REM 5. Create a view Cheap_View from Cheap_Food that shows only the product id, flavor and food.
 SQL> create view Cheap_View as
   2  select pid,flavor,food from Cheap_Food;
@@ -432,7 +427,6 @@ PID             FLAVOR          FOOD
 70-LEM          Lemon           Cookie                                          
 70-W            Walnut          Cookie                                          
 
-SQL> 
 SQL> REM 6. Create a sequence named Ordinal_No_Seq which generates the ordinal number
 SQL> REM starting from 1, increment by 1, to a maximum of 10. Include the options of cycle,
 SQL> REM cache and order. Use this sequence to populate the item_list table for a new order.
@@ -499,7 +493,6 @@ insert into item_list values(69696, Ordinal_No_Seq.nextval,  '70-TU')
 ERROR at line 1:
 ORA-00001: unique constraint (4125.I_PRIMKEY) violated 
 
-
 SQL> select * from item_list
   2  where item='70-TU' and rno=69696;
 
@@ -517,14 +510,32 @@ SQL> select * from item_list
 
 9 rows selected.
 
-SQL> 
 SQL> REM 7. Create a synonym named Product_details for the item_list relation. Perform the
 SQL> REM DML operations on it.
 SQL> create synonym Product_details for item_list;
 
 Synonym created.
 
-SQL> 
+SQL> insert into Product_details values(41963,5,'45-VA');
+
+1 row created.
+
+SQL> select * from Product_details where rno = 41963;
+
+       RNO    ORDINAL ITEM                                                      
+---------- ---------- ---------------                                           
+     41963          1 50-ALM                                                    
+     41963          2 90-CH-PF                                                  
+     41963          5 45-VA                                                     
+
+SQL> delete from Product_details where rno = 41963;
+
+3 rows deleted.
+
+SQL> select * from Product_details where rno = 41963;
+
+no rows selected
+ 
 SQL> REM 8. Drop all the above created database objects.
 SQL> drop view Blue_Flavor;
 
