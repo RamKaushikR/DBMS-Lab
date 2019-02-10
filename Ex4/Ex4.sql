@@ -133,6 +133,11 @@ REM 7. Create a synonym named Product_details for the item_list relation. Perfor
 REM DML operations on it.
 create synonym Product_details for item_list;
 
+insert into Product_details values(41963,5,'45-VA');
+select * from Product_details where rno = 41963;
+delete from Product_details where rno = 41963;
+select * from Product_details where rno = 41963;
+
 REM 8. Drop all the above created database objects.
 drop view Blue_Flavor;
 drop view Cheap_Food;
