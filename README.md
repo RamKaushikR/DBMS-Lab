@@ -1,4 +1,4 @@
-#Exercise names
+# Exercise names
 
 Ex1: DDL
 
