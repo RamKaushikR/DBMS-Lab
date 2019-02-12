@@ -322,12 +322,15 @@ ARNN                 Apple                11548 21-OCT-07          2
 
 SQL> REM Updatable
 SQL> select COLUMN_NAME,UPDATABLE from USER_UPDATABLE_COLUMNS
-  2  where table_name = 'HOT_FOOD';
+  2  where table_name = 'PIE_FOOD';
 
-COLUMN_NAME                    UPD                                              
------------------------------- ---                                              
-ITEM                           NO                                               
-COUNT                          NO                                               
+COLUMN_NAME                    UPD
+------------------------------ ---
+LNAME                          NO
+FLAVOR                         NO
+RNO                            NO
+RDATE                          NO
+ORDINAL                        YES                                              
 
 SQL> REM Check Update
 SQL> insert into Customers
