@@ -82,6 +82,7 @@ rec_sel receipts.rno%type;
 c integer;
 food_sel products.food%type;
 flavor_sel products.flavor%type;
+qtys integer;
 cursor c1 is select food,flavor,count(*) as qty
 from products p join item_list i on i.item = p.pid 
 where i.rno = rec_sel group by (p.food,p.flavor);
@@ -89,4 +90,23 @@ cursor c2 is select fname,lname from customers c join receipts r
 on r.cid = c.cid where rno=rec_sel;
 begin	
 	rec_sel := &rec_sel;
-	select 
+	select (count(*)) into c from products p join item_list i on i.item = p.pid 
+	where i.rno = rec_sel
+	group by (p.food,p.flavor);
+        select sum(count(*)) into qty from products p join item_list i on i.item = p.pid 
+	where i.rno = rec_sel
+	group by (p.food,p.flavor);
+	open c1;
+	open c2;
+	fetch c2 into c_fname,c_lname;
+	dbms_output.put_line('Customer name: '||c_fname||' '||c_lname); 
+	dbms_output.put_line('FOOD FLAVOR QUANTITY');
+	dbms_output.put_line('------------------------------------------');
+	for count in 1..c loop
+            fetch c1 into food_sel,flavor_sel,qtys;
+            dbms_output.put_line(flavor_sel||' '||food_sel||' '||qtys);
+    	end loop;
+	dbms_output.put_line('------------------------------------------');
+	dbms_output.put_line('Total Quantity='||qty);
+end;
+/
