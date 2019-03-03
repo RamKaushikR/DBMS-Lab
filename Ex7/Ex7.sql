@@ -37,33 +37,13 @@ on r.rno=t.rno;
 create or replace trigger q2
 after insert on item_list for each row 
 declare
-	temp temp_view%rowtype;
-	pid products.pid%type;
 	price products.price%type;
-	cursor c2_1 is select * from temp_view;
-	cursor c2_2 is select pid,price from products;
 begin
-	open c2_1;
-	open c2_2;
-	loop
-		fetch c2 into temp.rno,temp.rdate,temp.cid,temp.amount;
-		if c2%found then 
-			if :new.rno = temp.rno then
-				loop
-					fetch c3 into pid,price;
-					if c3%found then
-						if :new.item = pid then
-							temp.amount := temp.amount+price;
-						end if;
-					else
-						exit;
-					end if;
-				end loop;
-			end if;
-		else
-			exit;
-		end if;
-	end loop;
+	select p.price into price
+	from products p where p.pid=:new.item;
+	update temp_view
+	set amount=amount+price
+	where :new.rno=rno;
 end;
 /		
 REM 3 Implement the following constraints for Item_list relation:
