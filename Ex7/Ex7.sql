@@ -1,4 +1,4 @@
-REM Drop amount from recipts
+REM Drop amount from receipts
 alter table receipts 
 drop column amount;
 insert into products values('50-klmop','almond','twist',6.12);
