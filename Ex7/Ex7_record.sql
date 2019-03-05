@@ -1,5 +1,5 @@
 SQL> @z:/Ex7/Ex7.sql
-SQL> REM Drop amount from recipts
+SQL> REM Drop amount from receipts
 SQL> alter table receipts
   2  drop column amount;
 
