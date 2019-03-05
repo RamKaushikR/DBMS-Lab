@@ -1,11 +1,12 @@
-REM Add column for amount
-alter table Receipts add amount number(5,2);
+set serveroutput on;
 REM 1. For the given receipt number, calculate the Discount as follows:
 REM For total amount > $10 and total amount < $25: Discount=5%
 REM For total amount > $25 and total amount < $50: Discount=10%
 REM For total amount > $50: Discount=20%
 REM Calculate the amount (after the discount) and update the same in Receipts table.
 REM Print the receipt
+alter table receipts
+add amount float default 0;
 create or replace procedure discountcalc(amt IN products.price%type, 
 discount OUT products.price%type, total OUT products.price%type, discountp OUT int) as
 begin
@@ -136,13 +137,16 @@ REM the Item list. However, if there is already a receipt with that receipt numb
 REM keep adding 1 to the maximum ordinal number. Else before inserting into the Item list 
 REM with ordinal as 1, ask the user to give the customer name who placed the order and insert 
 REM this information into the Receipts.
-create or replace procedure ordinalinc(ord IN OUT item_list.ordinal%type) as
+alter table receipts 
+drop column amount;
+create or replace procedure ordinalinc(ord1 IN item_list.ordinal%type,o OUT item_list.ordinal%type) as
 begin
-	ord := ord + 1;
+	o := ord1 + 1;
 end ordinalinc;
 /
 declare
-	ord item_list.ordinal%type;
+	ord1 item_list.ordinal%type;
+	o item_list.ordinal%type;
 	itemin item_list.item%type;
 	receiptin item_list.rno%type;
 	cidin customers.cid%type;
@@ -150,25 +154,26 @@ declare
 	ordcount item_list.ordinal%type;
 	cursor c1 is select ordinal from item_list where rno = receiptin;
 begin
-	ord := 1;
+	ord1 := 1;
+	o := 1;
 	itemin := '&itemin';
 	receiptin := &receiptin;
 	open c1;
 	loop
 		fetch c1 into ordcount;
 		if c1%FOUND then
-			ordinalinc(ord);
+			ordinalinc(ord1,o);
 		else
 			exit;
 		end if;
 	end loop;
-	if ord = 1 then
+	if o = 1 then
 		cidin := '&cidin';
 		datein := '&datein';
 		insert into Receipts values(receiptin, datein, cidin);
 	end if;
-	insert into item_list values(receiptin, ord, itemin);
-	dbms_output.put_line('Inserted '||receiptin||' '||ord||' '||itemin);
+	insert into item_list values(receiptin, o, itemin);
+	dbms_output.put_line('Inserted '||receiptin||' '||o||' '||itemin);
 end;
 /
 REM 4. Write a stored function to display the customer name who ordered 
@@ -208,6 +213,8 @@ end;
 /
 REM 5. Implement Question (2) using stored function to return the amount to be paid 
 REM and update the same, for the given receipt number.
+alter table receipts
+add amount float default 0;
 create or replace function amountcalc(amt IN products.price%type) return products.price%type
 as
 discount products.price%type;
